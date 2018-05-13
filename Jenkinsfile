@@ -16,6 +16,7 @@ pipeline {
                         compose_content = readYaml([file:composeFile])
                         compose_content.services.each {
                             print it
+                        }
                     }
                 }
             }
