@@ -1,11 +1,14 @@
+dockerComposeFilePaths = ["docker-compose.yaml", "docker-compose.yml"]
 pipeline {
     agent any
     stages {
         stage("Prepare") {
             steps {
-                echo "Echo Step"
-                script {
-                    print "Script Step"
+                dockerComposeFilePaths.each {
+                    if (fileExists(it)) {
+                        print "Compose file found"
+                        composeFile = it
+                    }
                 }
             }
         }
@@ -21,10 +24,6 @@ pipeline {
                             ]])
                     }
                 }
-                // build job: 'K8S_RECYCLE', parameters: [
-                //     string(name: 'NAMESPACE', value: 'breach-engine'), 
-                //     string(name: 'POD_SELECTION', value: 'web|worker')
-                // ]
             }
         }
     }
