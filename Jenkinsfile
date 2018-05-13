@@ -4,10 +4,12 @@ pipeline {
     stages {
         stage("Prepare") {
             steps {
-                dockerComposeFilePaths.each {
-                    if (fileExists(it)) {
-                        print "Compose file found"
-                        composeFile = it
+                script {
+                    dockerComposeFilePaths.each {
+                        if (fileExists(it)) {
+                            print "Compose file found"
+                            composeFile = it
+                        }
                     }
                 }
             }
