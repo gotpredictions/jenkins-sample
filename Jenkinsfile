@@ -14,7 +14,7 @@ pipeline {
                     }
                     if(composeFile != null) {
                         compose_content = readYaml([file:composeFile])
-                        print conpose_content.services
+                        print compose_content.services
                     }
                 }
             }
