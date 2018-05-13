@@ -14,8 +14,10 @@ pipeline {
                     }
                     if(composeFile != null) {
                         compose_content = readYaml([file:composeFile])
-                        compose_content.services.each {
-                            print it
+                        compose_content.services.each { service, svc_info -> 
+                            print "Need to push service ${service}" 
+                            image_name = svc_info.image.split('/')[1]
+                            print "Image name ${image_name}"
                         }
                     }
                 }
