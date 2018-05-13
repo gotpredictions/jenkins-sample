@@ -1,4 +1,5 @@
 dockerComposeFilePaths = ["docker-compose.yaml", "docker-compose.yml"]
+composeFile = null
 pipeline {
     agent any
     stages {
@@ -10,6 +11,10 @@ pipeline {
                             print "Compose file found"
                             composeFile = it
                         }
+                    }
+                    if(composeFile != null) {
+                        compose_content = readYaml([file:composeFile])
+                        print conpose_content.services
                     }
                 }
             }
