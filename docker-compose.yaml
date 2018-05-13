@@ -1,0 +1,48 @@
+# This docker compose file should be used to generate all the
+# Docker images exactly the way they are inteded to be deployed
+# in staging, preproduction and production
+
+# This template is also used for testing in jenkins, hence it is
+# OK to refer to other images.
+
+# DO NOT DO THE FOLLOWING
+# -----------------------
+# 1. Do not mount volumes.  It is expected that all content runs from the image.
+# 2. Do not override the commands, unless they are expected to be present in
+#    the final version of k8s files.
+# 3. Do not open ports used for debugging etc.
+
+version: '3.5'
+
+services:
+  frontend:
+    image: sample/uigateway_frontend
+    build: frontend
+    depends_on:
+      - backend
+    ports:
+      - "8889:80"
+    networks:
+      - portal
+
+  backend:
+    image: sample/uigateway_backend
+    build: backend
+    environment:
+      - ALLOWED_HOSTS=*
+    networks:
+      - portal
+      - wsapidocker_idti
+    external_links:
+      # Links to shared containers
+      - shared_db_1:db
+      - shared_db_1:sessiondb
+      - shared_s3-aws_1:s3-aws
+      - portal_frontend_1:portal
+      - wsapidocker_wsapi-gw_1:wsapi-gw
+
+networks:
+  portal:
+    external: true
+  wsapidocker_idti:
+    external: true
